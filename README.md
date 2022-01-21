@@ -1,2 +1,2 @@
 # LCA-shared-electric-scooters
-A life cycle assessment of a shared electric scooter was done. 
+A life cycle assessment of shared electric scooters was done where study was carried out to determine the environmental impacts through cradle-to-grave life cycle of shared e-scooters.
