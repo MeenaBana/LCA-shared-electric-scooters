@@ -2,15 +2,15 @@
 This is an overview of the academic project.
 
 ## Contents
-1. [Subject Introduction](#subject-introduction)
+1. [Topic](#topic)
 1. [Project Description](project-description)
 1. [Inventory Analysis](#inventory-analysis)
 1. [Comparative Analysis](#comparative-analysis)
 1. [Conclusion and Recommendation](#conclusion-recommendation)
 
 
-<a id="subject-introduction"></a>
-## Subject Introduction
+<a id="topic"></a>
+## Topic 
 Life cycle assessment on the daily use aspect of a general electric scooter used in sharing services was done with the help of the literature and different material libraries available in the tools SimaPro and Edupack Granta. A comparative analysis between electric scooters and the ordinary transport means of which e-scooters are direct rivals was also done.
 
 <a id="project-description"></a>
@@ -27,4 +27,4 @@ A comparison was made where the emissions from the electric scooter were compare
 
 <a id="conclusion-recommendation"></a>
 ## Conclusion and Recommendation
-According to the results, a conclusion was made and it also includes the life cycle phases of an electric scooter that affect the environment in a more negative way. A recommendation was written to an imaginary client where it was also referring how selected technology performed compared to the alternatives.
+According to the results, a conclusion was made and it also includes the life cycle phases of an electric scooter that affect the environment in a more negative way. A recommendation was written to an imaginary client where it was also referring to how selected technology performed compared to the alternatives.
