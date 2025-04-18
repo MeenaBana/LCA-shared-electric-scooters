@@ -15,16 +15,22 @@ import seaborn as sns
 from matplotlib.patches import FancyArrowPatch
 
 
+def get_project_root():
+    """Get the path to the project root directory."""
+    current_dir = os.path.dirname(os.path.abspath(__file__))
+    return os.path.dirname(current_dir)
+
 def ensure_dir(directory):
     """Ensure directory exists, creating it if necessary."""
     if not os.path.exists(directory):
         os.makedirs(directory)
 
 
-def save_data_to_csv(data, filename, directory="data"):
+def save_data_to_csv(data, filename):
     """Save data to a CSV file in the specified directory."""
-    ensure_dir(directory)
-    filepath = os.path.join(directory, filename)
+    data_dir = os.path.join(get_project_root(), "data")
+    ensure_dir(data_dir)
+    filepath = os.path.join(data_dir, filename)
     
     with open(filepath, 'w', newline='') as csvfile:
         csvwriter = csv.writer(csvfile)
@@ -34,9 +40,10 @@ def save_data_to_csv(data, filename, directory="data"):
     print(f"Data saved to {filepath}")
 
 
-def load_data_from_csv(filename, directory="data"):
+def load_data_from_csv(filename):
     """Load data from a CSV file in the specified directory."""
-    filepath = os.path.join(directory, filename)
+    data_dir = os.path.join(get_project_root(), "data")
+    filepath = os.path.join(data_dir, filename)
     
     if not os.path.exists(filepath):
         raise FileNotFoundError(f"File not found: {filepath}")
@@ -58,7 +65,7 @@ def load_data_from_csv(filename, directory="data"):
     return data
 
 
-def create_emissions_comparison_chart(save_path="results"):
+def create_emissions_comparison_chart():
     """
     Create a comparison chart of emissions from different transport modes.
     Data from emissions comparison section of the report.
@@ -92,8 +99,9 @@ def create_emissions_comparison_chart(save_path="results"):
     
     plt.tight_layout()
    
-    ensure_dir(save_path)
-    plt.savefig(os.path.join(save_path, 'emissions_comparison.png'), dpi=300, bbox_inches='tight')
+    results_dir = os.path.join(get_project_root(), "results")
+    ensure_dir(results_dir)
+    plt.savefig(os.path.join(results_dir, 'emissions_comparison.png'), dpi=300, bbox_inches='tight')
    
     data = {
         'Transport Mode': transport_modes,
@@ -105,7 +113,7 @@ def create_emissions_comparison_chart(save_path="results"):
     return plt.gcf()
 
 
-def create_component_emissions_chart(save_path="results"):
+def create_component_emissions_chart():
     """
     Create a chart showing emissions contributions from different e-scooter components.
     """
@@ -146,8 +154,9 @@ def create_component_emissions_chart(save_path="results"):
     
     plt.tight_layout()
     
-    ensure_dir(save_path)
-    plt.savefig(os.path.join(save_path, 'component_emissions.png'), dpi=300, bbox_inches='tight')
+    results_dir = os.path.join(get_project_root(), "results")
+    ensure_dir(results_dir)
+    plt.savefig(os.path.join(results_dir, 'component_emissions.png'), dpi=300, bbox_inches='tight')
    
     data = {
         'Component': components,
@@ -159,7 +168,7 @@ def create_component_emissions_chart(save_path="results"):
     return plt.gcf()
 
 
-def create_lifecycle_emissions_chart(save_path="results"):
+def create_lifecycle_emissions_chart():
     """
     Create a chart showing emissions across the lifecycle phases.
     """
@@ -194,8 +203,9 @@ def create_lifecycle_emissions_chart(save_path="results"):
     
     plt.tight_layout()
    
-    ensure_dir(save_path)
-    plt.savefig(os.path.join(save_path, 'lifecycle_emissions.png'), dpi=300, bbox_inches='tight')
+    results_dir = os.path.join(get_project_root(), "results")
+    ensure_dir(results_dir)
+    plt.savefig(os.path.join(results_dir, 'lifecycle_emissions.png'), dpi=300, bbox_inches='tight')
    
     data = {
         'Lifecycle Phase': phases,
@@ -207,7 +217,7 @@ def create_lifecycle_emissions_chart(save_path="results"):
     return plt.gcf()
 
 
-def create_impact_categories_chart(save_path="results"):
+def create_impact_categories_chart():
     """
     Create a chart showing different environmental impact categories.
     """
@@ -247,8 +257,9 @@ def create_impact_categories_chart(save_path="results"):
     
     plt.title('Environmental Impact Categories (Normalized)', fontsize=16)
 
-    ensure_dir(save_path)
-    plt.savefig(os.path.join(save_path, 'impact_categories.png'), dpi=300, bbox_inches='tight')
+    results_dir = os.path.join(get_project_root(), "results")
+    ensure_dir(results_dir)
+    plt.savefig(os.path.join(results_dir, 'impact_categories.png'), dpi=300, bbox_inches='tight')
 
     data = {
         'Impact Category': categories,
@@ -261,7 +272,7 @@ def create_impact_categories_chart(save_path="results"):
     return plt.gcf()
 
 
-def create_lifespan_sensitivity_chart(save_path="results"):
+def create_lifespan_sensitivity_chart():
     """
     Create a chart showing how lifespan affects emissions.
     """
@@ -270,7 +281,7 @@ def create_lifespan_sensitivity_chart(save_path="results"):
     
     percent_change = (emissions[0] - emissions[1]) / emissions[1] * 100
  
-    plt.figure(figsize=(10, 6))
+    plt.figure(figsize=(10, 6), dpi=300)
    
     bars = plt.bar(lifespans, emissions, color=sns.color_palette("viridis", len(lifespans)))
     plt.ylabel('g CO2-eq/passenger-km', fontsize=12)
@@ -281,8 +292,9 @@ def create_lifespan_sensitivity_chart(save_path="results"):
         plt.text(bar.get_x() + bar.get_width()/2., height + 0.5,
                 f'{height}', ha='center', va='bottom')
     
-    ensure_dir(save_path)
-    plt.savefig(os.path.join(save_path, 'lifespan_sensitivity.png'), dpi=300, bbox_inches='tight')
+    results_dir = os.path.join(get_project_root(), "results")
+    ensure_dir(results_dir)
+    plt.savefig(os.path.join(results_dir, 'lifespan_sensitivity.png'), dpi=300, bbox_inches='tight')
     
     data = {
         'Lifespan': lifespans,
@@ -293,9 +305,9 @@ def create_lifespan_sensitivity_chart(save_path="results"):
     return plt.gcf()
 
 
-def create_circular_vs_linear_chart(save_path="results"):
+def create_circular_vs_linear_chart():
     """Create a comparison of linear vs circular economy models for e-scooters."""
-    plt.figure(figsize=(14, 8))
+    plt.figure(figsize=(10, 6), dpi=300)
     
     colors = {
         'extract': '#FF6B6B',  # Red
@@ -374,6 +386,16 @@ def create_circular_vs_linear_chart(save_path="results"):
     for i in range(n_points):
         start = (xs[i], ys[i])
         end = (xs[(i+1)%n_points], ys[(i+1)%n_points])
+
+        ax2.annotate('', 
+                    xy=(end[0], end[1]),            # arrow tip
+                    xytext=(start[0], start[1]),    # arrow base
+                    arrowprops=dict(
+                        arrowstyle='->',
+                        connectionstyle=f'arc3,rad=0.3',
+                        color='black',
+                        lw=1.5
+                    ))
         
         mid_x = (start[0] + end[0]) / 2
         mid_y = (start[1] + end[1]) / 2
@@ -406,8 +428,9 @@ def create_circular_vs_linear_chart(save_path="results"):
     plt.suptitle('Linear vs. Circular Economy for Shared Electric Scooters', fontsize=18, y=0.98)
     plt.tight_layout(rect=[0, 0, 1, 0.95])
 
-    ensure_dir(save_path)
-    plt.savefig(os.path.join(save_path, 'circular_vs_linear.png'), dpi=300, bbox_inches='tight')
+    results_dir = os.path.join(get_project_root(), "results")
+    ensure_dir(results_dir)
+    plt.savefig(os.path.join(results_dir, 'circular_vs_linear.png'), dpi=300, bbox_inches='tight')
    
     return plt.gcf()
 
@@ -417,9 +440,7 @@ def main():
     # Set style
     plt.style.use('ggplot')
     sns.set_palette("viridis")
-    
-    ensure_dir("data")
-    ensure_dir("results")
+
  
     create_emissions_comparison_chart()
     create_component_emissions_chart()
@@ -429,6 +450,8 @@ def main():
     create_circular_vs_linear_chart()
     
     print("All visualizations created successfully!")
+    print(f"Results saved to: {os.path.join(get_project_root(), 'results')}")
+    print(f"Data saved to: {os.path.join(get_project_root(), 'data')}")
 
 
 if __name__ == "__main__":
