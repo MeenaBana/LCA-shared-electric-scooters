@@ -1,0 +1,371 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>LCA Visualization Results</title>
+    <style>
+        body { font-family: Arial, sans-serif; max-width: 1200px; margin: 0 auto; padding: 20px; }
+        .chart-container { margin-bottom: 40px; }
+        img { max-width: 100%; height: auto; }
+    </style>
+</head>
+<body>
+    <h1>Life Cycle Assessment of Shared Electric Scooters</h1>
+    
+    <div class="chart-container">
+        <h2>Emissions Comparison</h2>
+        <img src="../results/emissions_comparison.png" alt="Emissions Comparison">
+        <p>Shared e-scooters produce 29.5 g CO₂-eq/passenger-km, which is 88% less than personal cars.</p>
+    </div>
+    <div class="chart-container">
+        <h2>Emissions Contributions Components</h2>
+        <img src="../results/component_emissions.png" alt="Component Emissions">
+        <p>Emissions contributions from different e-scooter components.</p>
+    </div>
+    <div class="chart-container">
+        <h2>Emissions Contribution by Lifecycle Phasess</h2>
+        <img src="../results/lifecycle_emissions.png" alt="Lifecycle Phasess">
+        <p>Emissions across the lifecycle phases.</p>
+    </div>
+    <div class="chart-container">
+        <h2>Environmental Impact Categories</h2>
+        <img src="../results/impact_categories.png" alt="Impact Categories">
+        <p>A comparison of different environmental impact categories.</p>
+    </div>
+    <div class="chart-container">
+        <h2>Lifespan Emissions</h2>
+        <img src="../results/lifespan_sensitivity.png" alt="Lifespan Emissions.">
+        <p>How lifespan affects emissions.</p>
+    </div>
+ 
+</body>
+</html>
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Linear vs Circular Economy for E-Scooters</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/7.8.5/d3.min.js"></script>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 20px;
+        }
+        h1 {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+        .container {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-around;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        .model {
+            width: 45%;
+            min-width: 450px;
+            margin-bottom: 40px;
+        }
+        .model h2 {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+        svg {
+            display: block;
+            margin: 0 auto;
+        }
+        .findings {
+            background-color: #f5f5f5;
+            border-radius: 8px;
+            padding: 15px;
+            margin-top: 20px;
+            font-size: 14px;
+        }
+        .findings h3 {
+            margin-top: 0;
+            margin-bottom: 10px;
+        }
+        ul {
+            margin: 0;
+            padding-left: 20px;
+        }
+        li {
+            margin-bottom: 5px;
+        }
+    </style>
+</head>
+<body>
+    <h2>Linear vs. Circular Economy Principles</h2>
+    
+    <div class="container">
+        <div class="model">
+            <h3>Linear Economy Model</h3>
+            <svg id="linear-model" width="500" height="300"></svg>
+            <div class="findings">
+                <h3>Key Findings from Life Cycle Assessment:</h3>
+                <ul>
+                    <li>Manufacturing: 87.8% of emissions</li>
+                    <li>Lifespan: 2 years (base scenario)</li>
+                    <li>Emissions: 29.5 g CO₂-eq/passenger-km</li>
+                    <li>Battery emissions: 30.2% of manufacturing</li>
+                </ul>
+            </div>
+        </div>
+        
+        <div class="model">
+            <h3>Circular Economy Model</h3>
+            <svg id="circular-model" width="500" height="300"></svg>
+            <div class="findings">
+                <h4>Potential Improvements:</h4>
+                <ul>
+                    <li>Extend lifespan to 4+ years (−50% emissions)</li>
+                    <li>Efficient material recovery (90%+)</li>
+                    <li>Alternative transport routes (−71.7% transport emissions)</li>
+                    <li>Improved collection strategies (−27.2% collection emissions)</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Colors
+        const colors = {
+            'extract': '#FF6B6B',  // Red
+            'produce': '#4ECDC4',  // Teal
+            'distribute': '#FFD166',  // Yellow
+            'use': '#06D6A0',  // Green
+            'dispose': '#073B4C',  // Dark Blue
+            'collect': '#118AB2',  // Blue
+            'recycle': '#8338EC',  // Purple
+            'reuse': '#3A86FF',  // Light Blue
+            'repair': '#FB5607',  // Orange
+        };
+
+        // Linear Economy Model
+        const linearSvg = d3.select('#linear-model');
+        const linearSteps = [
+            { name: 'Raw Material\nExtraction', color: colors.extract },
+            { name: 'Manufacturing', color: colors.produce },
+            { name: 'Distribution', color: colors.distribute },
+            { name: 'Use', color: colors.use },
+            { name: 'Disposal', color: colors.dispose }
+        ];
+        
+        const boxWidth = 80;
+        const boxHeight = 50;
+        const margin = 20;
+        const startX = 50;
+        const startY = 150;
+        
+        // Draw boxes
+        linearSvg.selectAll('rect')
+            .data(linearSteps)
+            .enter()
+            .append('rect')
+            .attr('x', (d, i) => startX + i * (boxWidth + margin))
+            .attr('y', startY - boxHeight / 2)
+            .attr('width', boxWidth)
+            .attr('height', boxHeight)
+            .attr('rx', 5)
+            .attr('ry', 5)
+            .attr('fill', d => d.color)
+            .attr('stroke', 'black')
+            .attr('stroke-width', 1);
+        
+        // Add text to boxes
+        linearSvg.selectAll('.box-text')
+            .data(linearSteps)
+            .enter()
+            .append('text')
+            .attr('x', (d, i) => startX + i * (boxWidth + margin) + boxWidth / 2)
+            .attr('y', startY)
+            .attr('text-anchor', 'middle')
+            .attr('dominant-baseline', 'middle')
+            .attr('font-size', '10px')
+            .attr('font-weight', 'bold')
+            .each(function(d) {
+                const lines = d.name.split('\n');
+                d3.select(this)
+                    .selectAll('tspan')
+                    .data(lines)
+                    .enter()
+                    .append('tspan')
+                    .attr('x', d3.select(this).attr('x'))
+                    .attr('dy', (_, i) => i === 0 ? '-0.5em' : '1em')
+                    .text(l => l);
+            });
+        
+        // Add arrows
+        for (let i = 0; i < linearSteps.length - 1; i++) {
+            linearSvg.append('line')
+                .attr('x1', startX + boxWidth + i * (boxWidth + margin))
+                .attr('y1', startY)
+                .attr('x2', startX + i * (boxWidth + margin) + boxWidth + margin)
+                .attr('y2', startY)
+                .attr('stroke', 'black')
+                .attr('stroke-width', 2)
+                .attr('marker-end', 'url(#arrow)');
+        }
+        
+        // Arrow marker definition
+        linearSvg.append('defs')
+            .append('marker')
+            .attr('id', 'arrow')
+            .attr('viewBox', '0 -5 10 10')
+            .attr('refX', 8)
+            .attr('refY', 0)
+            .attr('markerWidth', 6)
+            .attr('markerHeight', 6)
+            .attr('orient', 'auto')
+            .append('path')
+            .attr('d', 'M0,-5L10,0L0,5')
+            .attr('fill', 'black');
+        
+        // Circular Economy Model
+        const circularSvg = d3.select('#circular-model');
+        const circularSteps = [
+            { name: 'Sustainable\nMaterial Sourcing', color: colors.extract },
+            { name: 'Modular\nManufacturing', color: colors.produce },
+            { name: 'Extended\nUse Phase', color: colors.use },
+            { name: 'Maintenance\n& Repair', color: colors.repair },
+            { name: 'Refurbishment', color: colors.reuse },
+            { name: 'Material\nRecycling', color: colors.recycle }
+        ];
+        
+        const centerX = 250;
+        const centerY = 150;
+        const radius = 100;
+        
+        // Arrow marker definition for circular model
+        circularSvg.append('defs')
+            .append('marker')
+            .attr('id', 'circle-arrow')
+            .attr('viewBox', '0 -5 10 10')
+            .attr('refX', 8)
+            .attr('refY', 0)
+            .attr('markerWidth', 6)
+            .attr('markerHeight', 6)
+            .attr('orient', 'auto')
+            .append('path')
+            .attr('d', 'M0,-5L10,0L0,5')
+            .attr('fill', 'black');
+        
+        // Calculate positions for circular steps
+        const circularPositions = circularSteps.map((step, i) => {
+            const angle = (i * 2 * Math.PI / circularSteps.length) - Math.PI/2;
+            return {
+                ...step,
+                x: centerX + radius * Math.cos(angle),
+                y: centerY + radius * Math.sin(angle),
+                angle: angle
+            };
+        });
+        
+        // Draw circular path
+        const arcGenerator = d3.arc()
+            .innerRadius(radius - 5)
+            .outerRadius(radius + 5)
+            .startAngle(0)
+            .endAngle(2 * Math.PI);
+        
+        circularSvg.append('path')
+            .attr('d', arcGenerator)
+            .attr('transform', `translate(${centerX}, ${centerY})`)
+            .attr('fill', 'none')
+            .attr('stroke', 'black')
+            .attr('stroke-width', 1)
+            .attr('stroke-dasharray', '5,5');
+        
+        // Draw boxes for circular steps
+        circularSvg.selectAll('.circular-rect')
+            .data(circularPositions)
+            .enter()
+            .append('rect')
+            .attr('x', d => d.x - boxWidth/2)
+            .attr('y', d => d.y - boxHeight/2)
+            .attr('width', boxWidth)
+            .attr('height', boxHeight)
+            .attr('rx', 5)
+            .attr('ry', 5)
+            .attr('fill', d => d.color)
+            .attr('stroke', 'black')
+            .attr('stroke-width', 1);
+        
+        // Add text to circular boxes
+        circularSvg.selectAll('.circular-text')
+            .data(circularPositions)
+            .enter()
+            .append('text')
+            .attr('x', d => d.x)
+            .attr('y', d => d.y)
+            .attr('text-anchor', 'middle')
+            .attr('dominant-baseline', 'middle')
+            .attr('font-size', '10px')
+            .attr('font-weight', 'bold')
+            .each(function(d) {
+                const lines = d.name.split('\n');
+                d3.select(this)
+                    .selectAll('tspan')
+                    .data(lines)
+                    .enter()
+                    .append('tspan')
+                    .attr('x', d3.select(this).attr('x'))
+                    .attr('dy', (_, i) => i === 0 ? '-0.5em' : '1em')
+                    .text(l => l);
+            });
+        
+        // Add arrows between circular steps
+        for (let i = 0; i < circularPositions.length; i++) {
+            const start = circularPositions[i];
+            const end = circularPositions[(i + 1) % circularPositions.length];
+            
+            // Calculate curve control point
+            const midX = (start.x + end.x) / 2;
+            const midY = (start.y + end.y) / 2;
+            const dx = end.x - start.x;
+            const dy = end.y - start.y;
+            const dist = Math.sqrt(dx*dx + dy*dy);
+            
+            // Create control point toward center
+            const cpx = midX + (midX - centerX) * 0.2 / (dist/radius);
+            const cpy = midY + (midY - centerY) * 0.2 / (dist/radius);
+            
+            // Draw curved arrow path
+            circularSvg.append('path')
+                .attr('d', `M${start.x},${start.y} Q${cpx},${cpy} ${end.x},${end.y}`)
+                .attr('fill', 'none')
+                .attr('stroke', 'black')
+                .attr('stroke-width', 1.5)
+                .attr('marker-end', 'url(#circle-arrow)');
+        }
+        
+        // Add center circle
+        circularSvg.append('circle')
+            .attr('cx', centerX)
+            .attr('cy', centerY)
+            .attr('r', 40)
+            .attr('fill', 'white')
+            .attr('stroke', 'black')
+            .attr('stroke-width', 1);
+        
+        // Add center text
+        circularSvg.append('text')
+            .attr('x', centerX)
+            .attr('y', centerY)
+            .attr('text-anchor', 'middle')
+            .attr('dominant-baseline', 'middle')
+            .attr('font-size', '10px')
+            .attr('font-weight', 'bold')
+            .selectAll('tspan')
+            .data(['Reduced', 'Environmental', 'Impact'])
+            .enter()
+            .append('tspan')
+            .attr('x', centerX)
+            .attr('dy', (_, i) => i === 0 ? '-1em' : '1em')
+            .text(d => d);
+    </script>
+</body>
+</html>
