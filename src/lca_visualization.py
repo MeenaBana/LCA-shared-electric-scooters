@@ -9,6 +9,8 @@ import os
 import csv
 import numpy as np
 import pandas as pd
+import matplotlib
+matplotlib.use('TkAgg')
 import matplotlib.pyplot as plt
 import matplotlib.patches as mpatches
 import seaborn as sns
@@ -307,7 +309,8 @@ def create_lifespan_sensitivity_chart():
 
 def create_circular_vs_linear_chart():
     """Create a comparison of linear vs circular economy models for e-scooters."""
-    plt.figure(figsize=(10, 6), dpi=300)
+    plt.close('all')
+    plt.figure(figsize=(12, 8), dpi=300)
     
     colors = {
         'extract': '#FF6B6B',  # Red
@@ -386,16 +389,6 @@ def create_circular_vs_linear_chart():
     for i in range(n_points):
         start = (xs[i], ys[i])
         end = (xs[(i+1)%n_points], ys[(i+1)%n_points])
-
-        ax2.annotate('', 
-                    xy=(end[0], end[1]),            # arrow tip
-                    xytext=(start[0], start[1]),    # arrow base
-                    arrowprops=dict(
-                        arrowstyle='->',
-                        connectionstyle=f'arc3,rad=0.3',
-                        color='black',
-                        lw=1.5
-                    ))
         
         mid_x = (start[0] + end[0]) / 2
         mid_y = (start[1] + end[1]) / 2
@@ -440,7 +433,6 @@ def main():
     # Set style
     plt.style.use('ggplot')
     sns.set_palette("viridis")
-
  
     create_emissions_comparison_chart()
     create_component_emissions_chart()
